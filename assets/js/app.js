@@ -377,9 +377,9 @@ const cargarCursos = (listaCursos) => {
                     </div>
                     <div class="d-flex justify-content-between align-items-center mt-auto pt-3">
                       <div class="btn-group">
-                        <button type="button" class="btn btn-sm btn-outline-secondary">
+                        <a type="button" class="btn btn-sm btn-outline-secondary" href="detalles.html?${curso.id}">
                           Ver más detalles
-                        </button>
+                        </a>
                       </div>
                       <small class="text-body-secondary"></small>
                     </div>
