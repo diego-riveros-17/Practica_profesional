@@ -415,7 +415,7 @@ formBuscarCurso.addEventListener("input", (e) => {
     contenedor.innerHTML = `<div class="row justify-content-center">
                               <div class="col-sm-12">
                                   <div class="alert alert-danger" role="alert">
-                                    No se encontraron cursos
+                                    No se encontraron personajes
                                   </div>
                                </div>
                              </div>`;

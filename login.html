@@ -35,7 +35,7 @@
           >
             <ul class="navbar-nav col-lg-6">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#"
+                <a class="nav-link active" aria-current="page" href="index.html"
                   >Inicio</a
                 >
               </li>
@@ -69,41 +69,46 @@
     </header>
 
     <main>
-      <section class="py-5 text-center container">
-        <div class="container col-xl-10 col-xxl-8 px-4 py-5">
-          <div class="row align-items-center g-lg-5 py-5">
+      <section
+        class="container d-flex justify-content-center align-items-center vh-100"
+      >
+        <div class="container-fluid col-xl-10 col-xxl-8">
+          <div class="row align-items-center g-lg-5">
             <div class="col-md-10 mx-auto col-lg-6">
-              <form class="p-4 p-md-5 border rounded-3 bg-body-tertiary">
+              <form
+                class="p-md-5 border rounded-3 bg-body-tertiary"
+                id="formLogin"
+              >
                 <div class="form-floating mb-3">
                   <input
                     type="email"
                     class="form-control"
                     id="user"
-                    placeholder="name@example.com"
+                    placeholder="diego.rvs17@gamil.com"
                   />
-                  <label for="user">Email </label>
+                  <label for="user">Email o Dni </label>
                 </div>
                 <div class="form-floating mb-3">
                   <input
                     type="password"
                     class="form-control"
                     id="password"
-                    placeholder="Password"
+                    placeholder="Contraseña"
                   />
                   <label for="password">Password</label>
                 </div>
                 <div class="checkbox mb-3">
                   <label>
-                    <input type="checkbox" value="remember-me" /> Remember me
+                    <input type="checkbox" value="remember-me" /> Recordarme
                   </label>
                 </div>
-                <button class="w-100 btn btn-lg btn-primary" type="submit">
-                  Sign up
-                </button>
-                <hr class="my-4" />
-                <small class="text-body-secondary"
-                  >By clicking Sign up, you agree to the terms of use.</small
-                >
+                <div class="d-flex justify-content-center">
+                  <button class="btn btn-primary" type="submit" id="btnLogin">
+                    Iniciar Sesión
+                  </button>
+                </div>
+
+                <div id="msjConfirmacion"></div>
               </form>
             </div>
           </div>
@@ -121,6 +126,6 @@
       crossorigin="anonymous"
     ></script>
 
-    <script src="assets/js/app.js"></script>
+    <script src="assets/js/login.js"></script>
   </body>
 </html>
