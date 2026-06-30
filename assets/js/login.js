@@ -140,72 +140,77 @@ if (formRegistro) {
     e.preventDefault();
 
     const listaUsuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
-    const rolElegido = formRegistro.rol.value;
 
-    // 1. Estructura base con los datos comunes de la cuenta
+    // CAPTURA SEGURA DEL ROL DESDE EL SELECT
+    const selectRolElement = document.getElementById("regRol");
+    const rolElegido = selectRolElement ? selectRolElement.value : "";
+
+    if (!rolElegido) {
+      msjRegistro.innerHTML = `<div class="alert alert-danger">Por favor, seleccione un tipo de usuario.</div>`;
+      return;
+    }
+
+    // Estructura base leyéndola directamente por los ID que definiste
     let nuevoUsuario = {
       id: Date.now(),
-      nombre: formRegistro.nombre.value.trim(),
-      apellido: formRegistro.apellido.value.trim(),
-      email: formRegistro.email.value.trim(),
-      password: formRegistro.password.value,
+      nombre: document.getElementById("nombre").value.trim(),
+      apellido: document.getElementById("apellido").value.trim(),
+      email: document.getElementById("email").value.trim(),
+      password: document.getElementById("password").value,
       rol: rolElegido,
     };
 
-    // 2. Cargamos datos específicos y hacemos las validaciones correspondientes de unicidad
+    // Validaciones e inserciones cruzadas de datos según rol
     if (rolElegido === "ciudadano") {
-      const dniIngresado = formRegistro.dni.value.trim();
+      const dniIngresado = document.getElementById("dni").value.trim();
 
-      // Validar si el DNI ya existe en el sistema
       const existeDni = listaUsuarios.some(
-        (u) => u.rol === "ciudadano" && u.dni === dniIngresado,
+        (u) => u.rol === "ciudadano" && String(u.dni) === dniIngresado,
       );
       if (existeDni) {
-        msjRegistro.innerHTML = `<div class="alert alert-danger">Error: Ya existe un ciudadano registrado con ese DNI.</div>`;
+        msjRegistro.innerHTML = `<div class="alert alert-danger mt-2">Error: Ya existe una persona registrada con el DNI ingresado.</div>`;
         return;
       }
-
       nuevoUsuario.dni = dniIngresado;
-      nuevoUsuario.direccion = formRegistro.direccion.value.trim();
+      nuevoUsuario.direccion = document.getElementById("address").value.trim();
     } else if (rolElegido === "representante") {
-      const cuitIngresado = formRegistro.cuit.value.trim();
+      const cuitIngresado = document.getElementById("cuit").value.trim();
 
-      // Validar si el CUIT ya existe en el sistema (Validación de identidad institucional)
       const existeCuit = listaUsuarios.some(
         (u) => u.rol === "representante" && u.cuit === cuitIngresado,
       );
       if (existeCuit) {
-        msjRegistro.innerHTML = `<div class="alert alert-danger">Error: Ya existe un organismo registrado con este CUIT.</div>`;
+        msjRegistro.innerHTML = `<div class="alert alert-danger mt-2">Error: Ya existe un organismo registrado con este CUIT.</div>`;
         return;
       }
-
-      nuevoUsuario.nombreInstitucion =
-        formRegistro.institucionNombre.value.trim();
+      nuevoUsuario.nombreInstitucion = document
+        .getElementById("institucionNombre")
+        .value.trim();
       nuevoUsuario.cuit = cuitIngresado;
     }
 
-    // 3. Validar de forma general que el correo electrónico no esté duplicado
+    // Validación general de correo único
     const existeEmail = listaUsuarios.some(
       (u) => u.email === nuevoUsuario.email,
     );
     if (existeEmail) {
-      msjRegistro.innerHTML = `<div class="alert alert-danger">Error: El correo electrónico ya está en uso.</div>`;
+      msjRegistro.innerHTML = `<div class="alert alert-danger mt-2">Error: El correo electrónico ya se encuentra registrado.</div>`;
       return;
     }
 
-    // 4. Guardar el nuevo usuario en el arreglo del LocalStorage
+    // Guardado final en LocalStorage
     listaUsuarios.push(nuevoUsuario);
     localStorage.setItem("usuarios", JSON.stringify(listaUsuarios));
 
-    // Mensaje de éxito en la interfaz
-    msjRegistro.innerHTML = `<div class="alert alert-success">¡Registro exitoso como ${rolElegido}! Redirigiendo a la pantalla de ingreso...</div>`;
+    // Éxito, Limpieza y Redirección suave
+    msjRegistro.innerHTML = `<div class="alert alert-success mt-2">¡Registro completado con éxito! Redirigiendo...</div>`;
     formRegistro.reset();
 
-    // Ocultamos las secciones dinámicas nuevamente hasta el próximo uso
-    camposCiudadano.classList.add("d-none");
-    camposInstitucion.classList.add("d-none");
+    // Ocultamos el bloque grande del formulario para que quede limpio de nuevo
+    if (camposFormulario) camposFormulario.classList.add("d-none");
+    if (camposCiudadano) camposCiudadano.classList.add("d-none");
+    if (camposInstitucion) camposInstitucion.classList.add("d-none");
 
-    // Redirección controlada tras un lapso de tiempo corto
     setTimeout(() => {
       window.location.href = "login.html";
     }, 2000);

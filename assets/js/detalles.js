@@ -76,3 +76,43 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
   }
 });
+
+// --- CONTROL DE SESIÓN EN LA PÁGINA DE DETALLES ---
+// Verificamos si hay un usuario logueado en LocalStorage
+const sesionActiva = JSON.parse(localStorage.getItem("usuarioLogueado"));
+
+// Buscamos los elementos del Navbar en detalles.html
+// (Asegurate de que las rutas a login.html apunten bien desde tu menú)
+const botonLogin = document.querySelector('a[href*="login"]')?.parentElement;
+const botonRegistro =
+  document.querySelector('a[href*="registro"]')?.parentElement ||
+  document.querySelector('a[href*="Register"]')?.parentElement;
+const navMenu = document.querySelector(".navbar-nav");
+
+if (sesionActiva && navMenu) {
+  // 1. Ocultamos "Iniciar Sesión" y "Registrate" si existen en esta página
+  if (botonLogin) botonLogin.style.display = "none";
+  if (botonRegistro) botonRegistro.style.display = "none";
+
+  // 2. Creamos los elementos dinámicos con los datos del usuario logueado
+  const liUsuario = document.createElement("li");
+  liUsuario.className = "nav-item d-flex align-items-center me-3";
+  liUsuario.innerHTML = `<span class="text-white fw-bold">👋 Hola, ${sesionActiva.nombre}</span>`;
+
+  const liCerrarSesion = document.createElement("li");
+  liCerrarSesion.className = "nav-item";
+  liCerrarSesion.innerHTML = `<a class="btn btn-sm btn-danger ms-2" id="btnCerrarSesionDetalle" href="#">Cerrar Sesión</a>`;
+
+  // 3. Los inyectamos en la barra de navegación
+  navMenu.appendChild(liUsuario);
+  navMenu.appendChild(liCerrarSesion);
+
+  // 4. Lógica para el botón de Cerrar Sesión desde Detalles
+  document
+    .getElementById("btnCerrarSesionDetalle")
+    .addEventListener("click", (e) => {
+      e.preventDefault();
+      localStorage.removeItem("usuarioLogueado"); // Borramos la sesión
+      window.location.reload(); // Recargamos la página para restaurar el menú original
+    });
+}
