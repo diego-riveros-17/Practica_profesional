@@ -33,9 +33,9 @@
             class="navbar-collapse d-lg-flex justify-content-between collapse show"
             id="navbarsExample11"
           >
-            <ul class="navbar-nav col-lg-6">
+            <ul class="navbar-nav fw-bold col-lg-6">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="index.html"
+                <a class="nav-link" aria-current="page" href="index.html"
                   >Inicio</a
                 >
               </li>
@@ -43,26 +43,15 @@
                 <a class="nav-link" href="login.html">Iniciar Sesión</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="formulario_registro.html"
+                <a class="nav-link active" href="formulario_registro.html"
                   >Registrate</a
                 >
               </li>
+
+              <li class="nav-item active">
+                <span class="nav-link" id="usuarioNombre"></span>
+              </li>
             </ul>
-            <div class="col-lg-4">
-              <form class="d-flex" role="search" id="formBuscar">
-                <input
-                  class="form-control me-2"
-                  type="search"
-                  placeholder="Buscar"
-                  aria-label="Search"
-                  name="terminoBusqueda"
-                  id="terminoBusqueda"
-                />
-                <button class="btn btn-outline-success" type="submit">
-                  Buscar
-                </button>
-              </form>
-            </div>
           </div>
         </div>
       </nav>
@@ -79,14 +68,12 @@
                 class="p-4 p-md-4 border rounded-3 bg-body-tertiary"
                 id="formRegistro"
               >
-                <div id="msjRegistro"></div>
-
                 <div class="row">
                   <div class="col-sm-12">
                     <label for="regRol" class="form-label fw-bold"
                       >¿Cómo desea registrarse?</label
                     >
-                    <select class="form-select" id="regRol" required>
+                    <select class="form-select" name="rol" id="regRol" required>
                       <option value="" disabled selected>
                         Seleccione una opción...
                       </option>
@@ -193,6 +180,8 @@
                         Registrarme
                       </button>
                     </div>
+
+                    <div id="msjRegistro"></div>
                   </div>
                 </div>
 
