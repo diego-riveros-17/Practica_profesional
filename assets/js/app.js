@@ -350,13 +350,17 @@ let cursos = [
   },
 ];
 
+// Guardamos el arreglo de cursos en LocalStorage para que otras páginas puedan leerlo
+if (!localStorage.getItem("cursos")) {
+  localStorage.setItem("cursos", JSON.stringify(cursos));
+}
 const contenedor = document.querySelector("#cardCursos");
 
 const cargarCursos = (listaCursos) => {
   contenedor.innerHTML = "";
   listaCursos.forEach((curso) => {
     contenedor.innerHTML += `<div class="col col-lg-4 col-md-6 col-sm-6">
-                <div class="card h-100" style="max-width: 25rem; max-height: auto;">
+                <div class="card h-100" style="max-width: 24rem; max-height: auto;">
                   <img src="${curso.imagen}" class="card-img-top" alt="..." style="height: 18rem;"/>
                   <div class="card-body d-flex flex-column">
                     <div>
@@ -372,7 +376,7 @@ const cargarCursos = (listaCursos) => {
                         <b>Fecha de Inicio: </b> ${curso.fechaInicio}
                         </p>
                         <p class="text-start text-muted small m-0 p-0">
-                        <b>Vacantes: </b> ${curso.cuposDisponibles == 0 ? "Sin vancantes" : curso.cuposDisponibles}
+                        <b>Vacantes disponibles: </b> ${curso.cuposDisponibles == 0 ? "Sin vancantes" : curso.cuposDisponibles}
                         </p>
                     </div>
                     <div class="d-flex justify-content-between align-items-center mt-auto pt-3">
@@ -415,9 +419,81 @@ formBuscarCurso.addEventListener("input", (e) => {
     contenedor.innerHTML = `<div class="row justify-content-center">
                               <div class="col-sm-12">
                                   <div class="alert alert-danger" role="alert">
-                                    No se encontraron personajes
+                                    No se encontraron cursos
                                   </div>
                                </div>
                              </div>`;
+  }
+});
+
+window.addEventListener("DOMContentLoaded", () => {
+  const contenedor = document.getElementById("page-container-1");
+  // Le damos un mini respiro al navegador para que renderice y luego aplicamos el fade-in
+  setTimeout(() => {
+    contenedor.classList.add("fade-in");
+  }, 10);
+});
+
+// Esperamos a que todo el HTML esté cargado en el navegador
+document.addEventListener("DOMContentLoaded", () => {
+  // 1. Buscamos el enlace del menú que va a los cursos
+  const botonCursos = document.querySelector('a[href="#cursos"]');
+
+  // 2. Buscamos la sección de los cursos
+  const seccionCursos = document.getElementById("cursos");
+
+  // 3. Si ambos existen en la página, les ponemos el freno de mano
+  if (botonCursos && seccionCursos) {
+    botonCursos.addEventListener("click", function (evento) {
+      evento.preventDefault(); // <-- ESTO frena el salto brusco de golpe
+
+      // Hacemos el deslizamiento suave controlado por código
+      seccionCursos.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    });
+  }
+});
+
+// --- CONTROL DE SESIÓN EN LA PÁGINA PRINCIPAL ---
+document.addEventListener("DOMContentLoaded", () => {
+  // Intentamos obtener el usuario logueado
+  const sesionActiva = JSON.parse(localStorage.getItem("usuarioLogueado"));
+
+  // Buscamos los contenedores de los enlaces del navbar en tu HTML
+  // TIP: En tu HTML dales IDs o clases a los <li> de "Iniciar Sesión", "Registrate", etc.
+  const botonLogin = document.querySelector('a[href*="login"]')?.parentElement;
+  const botonRegistro =
+    document.querySelector('a[href*="registro"]')?.parentElement ||
+    document.querySelector('a[href*="Register"]')?.parentElement;
+  const navMenu = document.querySelector(".navbar-nav"); // El contenedor principal de tu menú
+
+  if (sesionActiva && navMenu) {
+    // 1. Ocultamos los botones de Login y Registro si existen
+    if (botonLogin) botonLogin.style.display = "none";
+    if (botonRegistro) botonRegistro.style.display = "none";
+
+    // 2. Creamos los elementos para mostrar el usuario y el botón de salir
+    const liUsuario = document.createElement("li");
+    liUsuario.className = "nav-item d-flex align-items-center me-3";
+    liUsuario.innerHTML = `<span class="text-white fw-bold">👋 Hola, ${sesionActiva.nombre} (${sesionActiva.rol})</span>`;
+
+    const liCerrarSesion = document.createElement("li");
+    liCerrarSesion.className = "nav-item";
+    liCerrarSesion.innerHTML = `<a class="btn btn-sm btn-danger ms-2" id="btnCerrarSesion" href="#">Cerrar Sesión</a>`;
+
+    // 3. Los agregamos al Navbar
+    navMenu.appendChild(liUsuario);
+    navMenu.appendChild(liCerrarSesion);
+
+    // 4. Lógica para Cerrar Sesión
+    document
+      .getElementById("btnCerrarSesion")
+      .addEventListener("click", (e) => {
+        e.preventDefault();
+        localStorage.removeItem("usuarioLogueado"); // Borramos solo la sesión activa
+        window.location.reload(); // Recargamos para actualizar el Navbar
+      });
   }
 });

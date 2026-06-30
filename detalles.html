@@ -73,57 +73,9 @@
       </nav>
     </header>
     <main>
-      <section>
-        <div
-          id="carouselExample"
-          class="carousel slide carousel-fade"
-          data-bs-ride="carousel"
-        >
-          <div class="carousel-inner">
-            <!-- Item Activo -->
-            <div class="carousel-item active">
-              <!-- Tu imagen limpia de fondo -->
-              <img
-                src="assets/img/infocursos1.png"
-                class="d-block w-100"
-                alt="InfoCursos"
-              />
-
-              <!-- Capa contenedora alineada con Flexbox nativo de Bootstrap -->
-              <div class="carousel-caption d-flex align-items-center">
-                <div class="container">
-                  <div class="row">
-                    <!-- Limitamos el ancho del texto a 6 columnas en pantallas grandes -->
-                    <div class="col-lg-6 col-md-8 col-12 text-start text-white">
-                      <h1 class="display-3 fw-bold mb-3 text-uppercase">
-                        ¡BIENVENIDO A
-                      </h1>
-                      <h1
-                        class="display-3 fw-bold mb-3 text-uppercase text-warning"
-                      >
-                        INFOCURSOS!
-                      </h1>
-                      <p class="lead display-6 fw-bolder mb-4">
-                        Conoce las últimas ofertas de cursos de formación
-                        profesional, disponibles.
-                      </p>
-                      <a href="#cursos" class="btn btn-outline-gold btn-lg"
-                        >Explora los Cursos Disponibles</a
-                      >
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="py-3 text-center container" id="cursos">
-        <div class="album py-5">
-          <div class="container">
-            <div class="row g-3" id="cardCursos"></div>
-          </div>
+      <section class="py-3 text-center container">
+        <div class="container my-5">
+          <div id="contenedorDetalle"></div>
         </div>
       </section>
     </main>
@@ -138,6 +90,6 @@
       crossorigin="anonymous"
     ></script>
 
-    <script src="assets/js/app.js"></script>
+    <script src="assets/js/detalles.js"></script>
   </body>
 </html>
