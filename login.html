@@ -10,9 +10,10 @@
       integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
       crossorigin="anonymous"
     />
+
     <link rel="stylesheet" href="assets/css/style.css" />
   </head>
-  <body class="d-flex flex-column h-100" id="page-container-1">
+  <body class="d-flex flex-column h-100" id="page-container">
     <header data-bs-theme="dark">
       <nav
         class="navbar navbar-expand-lg bg-body-tertiary fixed-top"
@@ -34,7 +35,7 @@
             class="navbar-collapse d-lg-flex justify-content-between collapse show"
             id="navbarsExample11"
           >
-            <ul class="navbar-nav fw-bold col-lg-6">
+            <ul class="navbar-nav col-lg-6">
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="index.html"
                   >Inicio</a
@@ -47,10 +48,6 @@
                 <a class="nav-link" href="formulario_registro.html"
                   >Registrate</a
                 >
-              </li>
-
-              <li class="nav-item">
-                <span class="nav-link" id="usuarioNombre"></span>
               </li>
             </ul>
             <div class="col-lg-4">
@@ -72,57 +69,50 @@
         </div>
       </nav>
     </header>
+
     <main>
-      <section>
-        <div
-          id="carouselExample"
-          class="carousel slide carousel-fade"
-          data-bs-ride="carousel"
-        >
-          <div class="carousel-inner">
-            <!-- Item Activo -->
-            <div class="carousel-item active">
-              <!-- Tu imagen limpia de fondo -->
-              <img
-                src="assets/img/infocursos1.png"
-                class="d-block w-100"
-                alt="InfoCursos"
-              />
-
-              <!-- Capa contenedora alineada con Flexbox nativo de Bootstrap -->
-              <div class="carousel-caption d-flex align-items-center">
-                <div class="container">
-                  <div class="row">
-                    <!-- Limitamos el ancho del texto a 6 columnas en pantallas grandes -->
-                    <div class="col-lg-6 col-md-8 col-12 text-start text-white">
-                      <h1 class="display-3 fw-bold mb-3 text-uppercase">
-                        ¡BIENVENIDO A
-                      </h1>
-                      <h1
-                        class="display-3 fw-bold mb-3 text-uppercase text-warning"
-                      >
-                        INFOCURSOS!
-                      </h1>
-                      <p class="lead display-6 fw-bolder mb-4">
-                        Conoce las últimas ofertas de cursos de formación
-                        profesional, disponibles.
-                      </p>
-                      <a href="#cursos" class="btn btn-outline-gold btn-lg"
-                        >Explora los Cursos Disponibles</a
-                      >
-                    </div>
-                  </div>
+      <section
+        class="container d-flex justify-content-center align-items-center vh-100"
+      >
+        <div class="container-fluid col-xl-10 col-xxl-8">
+          <div class="row align-items-center g-lg-5">
+            <div class="col-md-10 mx-auto col-lg-6">
+              <form
+                class="p-md-5 border rounded-3 bg-body-tertiary"
+                id="formLogin"
+              >
+                <div class="form-floating mb-3">
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="user"
+                    placeholder="diego.rvs17@gamil.com"
+                  />
+                  <label for="user">Email o Dni </label>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+                <div class="form-floating mb-3">
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="password"
+                    placeholder="Contraseña"
+                  />
+                  <label for="password">Password</label>
+                </div>
+                <div class="checkbox mb-3">
+                  <label>
+                    <input type="checkbox" value="remember-me" /> Recordarme
+                  </label>
+                </div>
+                <div class="d-flex justify-content-center">
+                  <button class="btn btn-primary" type="submit" id="btnLogin">
+                    Iniciar Sesión
+                  </button>
+                </div>
 
-      <section class="py-3 text-center container" id="cursos">
-        <div class="album py-5">
-          <div class="container">
-            <div class="row g-3" id="cardCursos"></div>
+                <div id="msjConfirmacion"></div>
+              </form>
+            </div>
           </div>
         </div>
       </section>
@@ -138,6 +128,6 @@
       crossorigin="anonymous"
     ></script>
 
-    <script src="assets/js/app.js"></script>
+    <script src="assets/js/login.js"></script>
   </body>
 </html>
