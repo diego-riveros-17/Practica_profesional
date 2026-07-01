@@ -27,6 +27,17 @@ if (!localStorage.getItem("usuarios")) {
   localStorage.setItem("usuarios", JSON.stringify(usuariosPorDefecto));
 }
 
+// --- GUARDIÁN DE ACCESO: REDIRECCIÓN SI YA INICIÓ SESIÓN ---
+const usuarioLogueadoActivo = JSON.parse(
+  localStorage.getItem("usuarioLogueado"),
+);
+
+if (usuarioLogueadoActivo) {
+  // Si ya hay una sesión en el LocalStorage, lo mandamos directo al inicio
+  window.location.href = "index.html";
+}
+// ==========================================================s
+
 // Obtener la lista actualizada de usuarios desde LocalStorage
 const obtenerUsuarios = () => JSON.parse(localStorage.getItem("usuarios"));
 
@@ -88,47 +99,70 @@ if (formLogin) {
 // --- LÓGICA DE REGISTRO ---
 // Asegurate de que tu formulario de registro en el HTML tenga id="formRegistro"
 // --- MANEJO DINÁMICO DE LA INTERFAZ DE REGISTRO ---
-// --- MANEJO DINÁMICO DEL SELECTOR DE ROL ---
-const selectRol = document.getElementById("regRol");
-const camposFormulario = document.getElementById("camposFormulario"); // El bloque grande
+// --- MANEJO DINÁMICO CON BOTONES DE SELECCIÓN DE ROL ---
+const btnCiudadano = document.getElementById("btnRolCiudadano");
+const btnRepresentante = document.getElementById("btnRolRepresentante");
+const inputOcultoRol = document.getElementById("regRol"); // El input que simula el select
+
+const camposFormulario = document.getElementById("camposFormulario");
 const camposCiudadano = document.getElementById("camposCiudadano");
 const camposInstitucion = document.getElementById("camposInstitucion");
 
-if (selectRol) {
-  selectRol.addEventListener("change", (e) => {
-    const rolSeleccionado = e.target.value;
+// Función reutilizable para activar los estilos y desplegar los campos adecuados
+function seleccionarRol(rol) {
+  // Guardamos el rol en el input oculto para que el submit funcione idéntico
+  inputOcultoRol.value = rol;
 
-    // Al seleccionar cualquier rol válido, mostramos el cuerpo del formulario
-    camposFormulario.classList.remove("d-none");
+  // Mostramos el contenedor principal de los campos comunes
+  camposFormulario.classList.remove("d-none");
 
-    // Activamos obligatoriedad de los campos comunes
-    document.getElementById("nombre").required = true;
-    document.getElementById("apellido").required = true;
-    document.getElementById("email").required = true;
-    document.getElementById("password").required = true;
+  // Activamos requeridos comunes
+  document.getElementById("nombre").required = true;
+  document.getElementById("apellido").required = true;
+  document.getElementById("email").required = true;
+  document.getElementById("password").required = true;
 
-    if (rolSeleccionado === "ciudadano") {
-      // Mostramos Ciudadano, ocultamos Institución
-      camposCiudadano.classList.remove("d-none");
-      camposInstitucion.classList.add("d-none");
+  if (rol === "ciudadano") {
+    // Cambios visuales de los botones (Destacar Ciudadano)
+    btnCiudadano.classList.replace("btn-outline-secondary", "btn-primary");
+    btnCiudadano.classList.add("text-white");
+    btnRepresentante.classList.replace("btn-primary", "btn-outline-secondary");
+    btnRepresentante.classList.remove("text-white");
 
-      // Validaciones requeridas específicas
-      document.getElementById("dni").required = true;
-      document.getElementById("address").required = true;
-      document.getElementById("institucionNombre").required = false;
-      document.getElementById("cuit").required = false;
-    } else if (rolSeleccionado === "representante") {
-      // Mostramos Institución, ocultamos Ciudadano
-      camposInstitucion.classList.remove("d-none");
-      camposCiudadano.classList.add("d-none");
+    // Mostrar sección correspondiente
+    camposCiudadano.classList.remove("d-none");
+    camposInstitucion.classList.add("d-none");
 
-      // Validaciones requeridas específicas
-      document.getElementById("institucionNombre").required = true;
-      document.getElementById("cuit").required = true;
-      document.getElementById("dni").required = false;
-      document.getElementById("address").required = false;
-    }
-  });
+    // Requeridos específicos
+    document.getElementById("dni").required = true;
+    document.getElementById("address").required = true;
+    document.getElementById("institucionNombre").required = false;
+    document.getElementById("cuit").required = false;
+  } else if (rol === "representante") {
+    // Cambios visuales de los botones (Destacar Representante)
+    btnRepresentante.classList.replace("btn-outline-secondary", "btn-primary");
+    btnRepresentante.classList.add("text-white");
+    btnCiudadano.classList.replace("btn-primary", "btn-outline-secondary");
+    btnCiudadano.classList.remove("text-white");
+
+    // Mostrar sección correspondiente
+    camposInstitucion.classList.remove("d-none");
+    camposCiudadano.classList.add("d-none");
+
+    // Requeridos específicos
+    document.getElementById("institucionNombre").required = true;
+    document.getElementById("cuit").required = true;
+    document.getElementById("dni").required = false;
+    document.getElementById("address").required = false;
+  }
+}
+
+// Escuchadores de eventos para los botones estéticos
+if (btnCiudadano && btnRepresentante) {
+  btnCiudadano.addEventListener("click", () => seleccionarRol("ciudadano"));
+  btnRepresentante.addEventListener("click", () =>
+    seleccionarRol("representante"),
+  );
 }
 
 // --- LÓGICA DE PROCESAMIENTO DEL REGISTRO ---
